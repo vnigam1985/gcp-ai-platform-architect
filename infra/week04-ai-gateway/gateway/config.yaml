@@ -1,0 +1,27 @@
+# The AI gateway's config, baked into the gateway image (make week4-image).
+# Same shape as local/litellm-config.yaml from week 0, now pointing at Gemini.
+model_list:
+  - model_name: bank-chat
+    litellm_params:
+      # Set by Cloud Run: vertex_ai/<approved model>, called on the Montreal endpoint
+      model: os.environ/BANK_MODEL
+      vertex_project: os.environ/GCP_PROJECT
+      vertex_location: os.environ/VERTEX_LOCATION
+
+# Every prompt and every answer goes through the bank's Model Armor template (week 3).
+guardrails:
+  - guardrail_name: model-armor
+    litellm_params:
+      guardrail: model_armor
+      mode: [pre_call, post_call]
+      template_id: os.environ/MODEL_ARMOR_TEMPLATE
+      project_id: os.environ/GCP_PROJECT
+      location: os.environ/MODEL_ARMOR_LOCATION
+      default_on: true
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+  database_url: os.environ/DATABASE_URL
+
+litellm_settings:
+  telemetry: false

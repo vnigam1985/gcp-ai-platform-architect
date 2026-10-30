@@ -1,0 +1,73 @@
+# Week 8: release pipeline for the bank assistant on your Google Cloud AI platform.
+#
+#   1. inventory : the model the gateway serves must be in the model inventory
+#   2. ship      : build the app with Cloud Build, deploy a new Cloud Run revision
+#   3. gate      : run the release-gate job INSIDE the VPC. Fail = send all
+#                  traffic back to the previous revision.
+#
+# Manual trigger only. One-time setup: weeks/08-cicd-release-gate/README.md
+#   - make week8 REPO=<you>/gcp-ai-platform-architect
+#   - Repo variables: GCP_PROJECT, GCP_WIF_PROVIDER, GCP_RELEASE_SA, GCP_REGION
+#   - GitHub environment "lab" with you as required reviewer
+name: course-release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency: course-release
+
+env:
+  REGION: ${{ vars.GCP_REGION || 'northamerica-northeast1' }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: lab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_RELEASE_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ vars.GCP_PROJECT }}
+
+      - name: 1. Model in use vs inventory
+        run: |
+          pip install pyyaml
+          ./scripts/gcp-models-in-use.sh > in-use.json
+          python3 scripts/check_model_inventory.py --deployed in-use.json | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - id: prev
+        name: Remember the serving revision (for rollback)
+        run: echo "rev=$(gcloud run services describe bank-assistant --region "$REGION" --format='value(status.latestReadyRevisionName)')" >> "$GITHUB_OUTPUT"
+
+      - name: 2. Build and deploy a new revision
+        run: |
+          TAG="${GITHUB_SHA::7}"
+          REG="$REGION-docker.pkg.dev/${{ vars.GCP_PROJECT }}/aiplat-images"
+          gcloud builds submit . --config=/dev/stdin <<YAML
+          steps:
+          - name: gcr.io/cloud-builders/docker
+            args: [build, -t, $REG/maple-bank-assistant:$TAG, -f, app/Dockerfile, .]
+          images: [$REG/maple-bank-assistant:$TAG]
+          YAML
+          gcloud run deploy bank-assistant --region "$REGION" --image "$REG/maple-bank-assistant:$TAG" --quiet
+          echo "Deployed maple-bank-assistant:$TAG" >> "$GITHUB_STEP_SUMMARY"
+
+      - id: gate
+        name: 3. Release gate (Cloud Run job inside the VPC)
+        run: |
+          ./scripts/release-gate.sh | tee gate.txt
+          { echo '```'; cat gate.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Roll back on a failed gate
+        if: failure() && steps.gate.conclusion == 'failure'
+        run: |
+          gcloud run services update-traffic bank-assistant --region "$REGION" --to-revisions "${{ steps.prev.outputs.rev }}=100" --quiet
+          echo "Gate failed. Traffic sent back to ${{ steps.prev.outputs.rev }}" >> "$GITHUB_STEP_SUMMARY"

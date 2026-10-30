@@ -179,7 +179,7 @@ Here you need to learn:
 
 Resources:
 - [Control access to models](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/control-model-access) (**FREE**, Docs)
-- [Organization policy constraints](https://docs.cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) (**FREE**, Docs)
+- [Organization policy constraints](https://docs.cloud.google.com/organization-policy/reference/org-policy-constraints) (**FREE**, Docs)
 - [VPC Service Controls overview](https://docs.cloud.google.com/vpc-service-controls/docs/overview) (**FREE**, Docs)
 - Course: [week 3](weeks/03-guardrails-as-code/README.md)
 
@@ -191,7 +191,7 @@ Here you need to learn:
 - Threat models: OWASP Top 10 for LLM Applications and for Agentic Applications
 
 Resources:
-- [Model Armor overview](https://docs.cloud.google.com/security-command-center/docs/model-armor-overview) (**FREE**, Docs)
+- [Model Armor overview](https://docs.cloud.google.com/model-armor/overview) (**FREE**, Docs)
 - [AI Protection overview](https://docs.cloud.google.com/security-command-center/docs/ai-protection-overview) (**FREE**, Docs)
 - [OWASP GenAI LLM Top 10 2026](https://genai.owasp.org/home/resources/owasp-genai-llm-top-10-2026/) and [OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/) (**FREE**)
 - Course: [weeks 3 and 6](weeks/06-detect-and-respond/README.md)
@@ -272,7 +272,7 @@ Resources:
 Check the [certification page](https://cloud.google.com/learn/certification) for current exams; Google is updating several for the new product names.
 
 Paid prep:
-- [Google Cloud Certified Generative AI Leader](https://www.udemy.com/course/google-cloud-certified-generative-ai-leader-certification/) (**Udemy**). Check the current rating before buying
+- [Be a Generative AI Leader: Google Cloud Certification](https://www.udemy.com/course/google-cloud-certified-generative-ai-leader-certification/) by in28Minutes. 4.6 from about 7,800 ratings, about 4 hours (**Udemy**, October 2026)
 
 ---
 

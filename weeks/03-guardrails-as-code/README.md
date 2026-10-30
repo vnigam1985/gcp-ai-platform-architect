@@ -91,6 +91,6 @@ Then try a different model from the VM (week 2's script with `MODEL=gemini-2.5-p
 
 ## Go deeper
 
-- [Model Armor overview](https://docs.cloud.google.com/security-command-center/docs/model-armor-overview)
+- [Model Armor overview](https://docs.cloud.google.com/model-armor/overview)
 - [Control access to models (vertexai.allowedModels)](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/control-model-access)
 - [VPC Service Controls overview](https://docs.cloud.google.com/vpc-service-controls/docs/overview)

@@ -25,7 +25,7 @@ On Google Cloud you'll run **the same gateway software** (LiteLLM) that you run 
 | Tool | Why | Install |
 | --- | --- | --- |
 | Docker Desktop | Local lab only (Google Cloud builds your images for you later) | [docker.com](https://www.docker.com/products/docker-desktop/) |
-| Google Cloud CLI | Every Google Cloud step | [Install the gcloud CLI](https://cloud.google.com/sdk/docs/install) |
+| Google Cloud CLI | Every Google Cloud step | [Install the gcloud CLI](https://docs.cloud.google.com/sdk/docs/install-sdk) |
 | Terraform 1.9+ | All the infrastructure | [Install Terraform](https://developer.hashicorp.com/terraform/install) |
 | make, git, Python 3.11+, openssl | Commands and scripts | Your OS package manager |
 | A **new** Google Cloud project with billing | Weeks 1 to 8 | Your own billing account. **Not your employer's.** |

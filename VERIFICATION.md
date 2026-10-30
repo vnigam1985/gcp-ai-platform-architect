@@ -18,6 +18,10 @@ Google Cloud AI changes every month. This file records what was checked before p
 | Week 0 local lab | **Run end to end**: 6/6 checks |
 | Model inventory checker | **Run** locally |
 
+## Links
+
+Every external link in the README and the week guides (88 across this repo and its sister repo) was opened on October 30, 2026. Moved pages were updated to their new addresses.
+
 ## Not verified yet (please report what you see)
 
 No Google Cloud project was used to build this course, so **nothing has been deployed end to end**. In particular:
